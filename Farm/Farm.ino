@@ -129,7 +129,7 @@ void ev_step() {
   
   if (input->keyPressed()) {
     Serial.print("Input Buffer : ");
-    Serial.println(input->getBuffer());
+    Serial.println(input->bufferGet());
 
     // switch-case does not work (!)
     
@@ -138,7 +138,7 @@ void ev_step() {
       FLAG |= 1;
       input->bufferClear();
     } else if (in == 'D') {
-      String cmd = input->getBuffer();
+      String cmd = input->bufferGet();
       int len = cmd.length();
       if (len == 4) {
         cmd.remove(len-1, 1);
@@ -146,12 +146,12 @@ void ev_step() {
         Serial.println(cmd);
 
         if (cmd.equals("AAA")) {
-          if (pirSensor->getState() == DISABLED) {
+          if (motionSensor->getState() == DISABLED) {
             Serial.println("PIR Sensor enabled");
-            pirSensor->setState(ON);
+            motionSensor->setState(ON);
           } else {
             Serial.println("PIR Sensor disabled");
-            pirSensor->setState(OFF);
+            motionSensor->setState(DISABLED);
           }
         }
       }
