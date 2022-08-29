@@ -6,8 +6,7 @@ class DustSensor : public Component {
 public:
   DustSensor(int driverPin, int measurePin, int samplingDelay)
     : driverPin(driverPin), measurePin(measurePin), samplingDelay(samplingDelay) {
-    pinMode(driverPin, INPUT);
-    pinMode(measurePin, OUTPUT);
+    pinMode(driverPin, OUTPUT);
   }
 
   virtual void stateOn() {

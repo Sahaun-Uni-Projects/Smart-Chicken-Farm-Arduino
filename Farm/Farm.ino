@@ -50,8 +50,8 @@ void init_components() {
   waterPump = new WaterPump(32);
   motionSensor = new PirSensor(40);
   motionBuzzer = new Buzzer(42);
-  doorServo = new ServoMotor(36);
-  dustSensor = new DustSensor(33, A10, 300);
+  doorServo = new ServoMotor(36, 90);
+  dustSensor = new DustSensor(33, A10, 280);
 
   components = {
     input, screen, darkLight1, darkLight2, heatLight,
@@ -116,10 +116,10 @@ void ev_step() {
   waterPump->setValue(waterLevelSensor->getLevel() > 650);
 
   if (motionSensor->getValue() == 1) {
-    motionBuzzer->play(1000, 1000);
+    //motionBuzzer->play(1000, 1000);
     motionLight->setValue(1);
   } else {
-    motionBuzzer->stop();
+    //motionBuzzer->stop();
     motionLight->setValue(0);
   }
 
