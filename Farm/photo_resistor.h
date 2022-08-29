@@ -3,7 +3,7 @@ class PhotoResistor : public Component {
   
 public:
   PhotoResistor(int pin) : pin(pin) {
-      pinMode(pin, INPUT);
+    pinMode(pin, INPUT);
   }
 
   virtual void stateOn() { setValue(analogRead(pin)); }

@@ -3,7 +3,7 @@ class PirSensor : public Component {
   
 public:
   PirSensor(int pin) : pin(pin) {
-      pinMode(pin, INPUT);
+    pinMode(pin, INPUT);
   }
 
   virtual void stateOn() {

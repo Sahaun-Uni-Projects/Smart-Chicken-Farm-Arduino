@@ -3,7 +3,7 @@ class Led : public Component {
   
 public:
   Led(int pin) : pin(pin) {
-      pinMode(pin, OUTPUT);
+    pinMode(pin, OUTPUT);
   }
 
   void setValue(int _value) {

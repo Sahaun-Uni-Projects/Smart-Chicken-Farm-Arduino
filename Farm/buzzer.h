@@ -3,7 +3,7 @@ class Buzzer : public Component {
   
 public:
   Buzzer(int pin) : pin(pin) {
-      pinMode(pin, OUTPUT);
+    pinMode(pin, OUTPUT);
   }
 
   void play(int freq, int dur = -1) {

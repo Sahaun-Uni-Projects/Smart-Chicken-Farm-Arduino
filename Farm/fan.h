@@ -3,7 +3,7 @@ class Fan : public Component {
   
 public:
   Fan(int pin) : pin(pin) {
-      pinMode(pin, OUTPUT);
+    pinMode(pin, OUTPUT);
   }
 
   void setValue(int _value) {

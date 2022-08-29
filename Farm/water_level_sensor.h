@@ -4,7 +4,7 @@ class WaterLevelSensor : public Component {
   
 public:
   WaterLevelSensor(int pin) : pin(pin) {
-      pinMode(pin, INPUT);
+    pinMode(pin, INPUT);
   }
 
   virtual void stateOff() {

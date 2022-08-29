@@ -3,7 +3,7 @@ class WaterPump : public Component {
   
 public:
   WaterPump(int pin) : pin(pin) {
-      pinMode(pin, OUTPUT);
+    pinMode(pin, OUTPUT);
   }
 
   void setValue(int _value) {
