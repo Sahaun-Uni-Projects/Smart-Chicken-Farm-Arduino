@@ -235,7 +235,7 @@ void ev_draw() {
       //screen->drawTextGeneral(10, 210, doorValue, 2, c_yellow);
       //screen->drawTextGeneral(10, 230, foodValue, 2, c_yellow);
     }
-    screen->drawText(10, 210, input->bufferGet());
+    //screen->drawText(10, 210, input->bufferGet());
   }
 
 void ev_draw_end() {}
