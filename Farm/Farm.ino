@@ -36,7 +36,7 @@ std::vector<Component*> components;
 int FLAG;
 
 void init_components() {
-  input = new Keypad4x4(new byte[4]{46, 47, 48, 49}, new byte[4]{50, 51, 52, 53}, 10);
+  input = new Keypad4x4(new byte[4]{46, 47, 48, 49}, new byte[4]{50, 51, 52, 53}, 4);
   screen = new LcdDisplay(A3, A2, A1, A0, A4);
   darkLight1 = new Led(22);
   darkLight2 = new Led(23);
@@ -128,8 +128,8 @@ void ev_step() {
   int doorAngleValue = -1;
   
   if (input->keyPressed()) {
-    Serial.print("KEY: ");
-    Serial.println(input->getKey());
+    Serial.print("Input Buffer : ");
+    Serial.println(input->getBuffer());
 
     // switch-case does not work (!)
     
@@ -138,12 +138,29 @@ void ev_step() {
       FLAG |= 1;
       input->bufferClear();
     } else if (in == 'D') {
-      FLAG |= 1;
-      input->bufferPop();
+      String cmd = input->getBuffer();
+      int len = cmd.length();
+      if (len == 4) {
+        cmd.remove(len-1, 1);
+        Serial.print("Executing command: ");
+        Serial.println(cmd);
+
+        if (cmd.equals("AAA")) {
+          if (pirSensor->getState() == DISABLED) {
+            Serial.println("PIR Sensor enabled");
+            pirSensor->setState(ON);
+          } else {
+            Serial.println("PIR Sensor disabled");
+            pirSensor->setState(OFF);
+          }
+        }
+      }
+      //FLAG |= 1;
+      //input->bufferPop();
     } else if (in == 'A') {
-      doorAngleValue = 1;
+      //doorAngleValue = 1;
     } else if (in == 'B') {
-      doorAngleValue = 2;
+      //doorAngleValue = 2;
     }
   }
   
