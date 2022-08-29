@@ -7,18 +7,12 @@ public:
     pinMode(pin, INPUT);
   }
 
-  virtual void stateOff() {
-    setLevel(analogRead(pin));
-    if (level < MAX_LEVEL) setState(ON);
-  }
-
   virtual void stateOn() {
     setLevel(analogRead(pin));
-    if (level >= MAX_LEVEL) setState(OFF);
   }
 
   void setLevel(int _level) {
-    level = std::max(_level, MAX_LEVEL);
+    level = std::min(_level, MAX_LEVEL);
   }
 
   int getLevel() {
