@@ -8,6 +8,7 @@
 #include "buzzer.h"
 #include "pir_sensor.h"
 #include "water_pump.h"
+#include "dust_sensor.h"
 #include "lcd_display.h"
 #include "servo_motor.h"
 #include "photo_resistor.h"
@@ -29,9 +30,10 @@ Buzzer *motionBuzzer;
 WaterPump *waterPump;
 PirSensor *motionSensor;
 ServoMotor *doorServo;
+DustSensor *dustSensor;
 
 std::vector<Component*> components;
-int FLAG, doorAngleValue;
+int FLAG;
 
 void init_components() {
   input = new Keypad4x4(new byte[4]{46, 47, 48, 49}, new byte[4]{50, 51, 52, 53}, 10);
@@ -49,16 +51,16 @@ void init_components() {
   motionSensor = new PirSensor(40);
   motionBuzzer = new Buzzer(42);
   doorServo = new ServoMotor(36);
+  dustSensor = new DustSensor(33, A10, 300);
 
   components = {
-    input, doorServo,
-    /*
-     *  screen, darkLight1, darkLight2, heatLight,
+    input, screen, darkLight1, darkLight2, heatLight,
     humidityFan, coolerFan,
     dhtSensor, lightSensor,
-    waterLevelSensor, waterPump,*/
-    //motionSensor, motionLight, motionBuzzer,
-    
+    waterLevelSensor, waterPump,
+    motionSensor, motionLight, motionBuzzer,
+    doorServo,
+    dustSensor,
   };
 }
 
@@ -113,53 +115,39 @@ void ev_step() {
 
   waterPump->setValue(waterLevelSensor->getLevel() > 650);
 
-  if(motionSensor->getValue() == HIGH)
-  {
+  if (motionSensor->getValue() == 1) {
     motionBuzzer->play(1000, 1000);
-    motionLight->setValue(HIGH);
-  }
-  else
-  {
+    motionLight->setValue(1);
+  } else {
     motionBuzzer->stop();
-    motionLight->setValue(LOW);
+    motionLight->setValue(0);
   }
 
-
-
-
-
- 
+  Serial.println(dustSensor->getDustDensity());
+  
+  int doorAngleValue = -1;
   
   if (input->keyPressed()) {
-        Serial.println(input->getKey());
-    char kk= input->getKey();
-    
-      if(kk == 'C')
-      {
-        FLAG |= 1;
-        input->bufferClear();
-      }
-      else if(kk == 'D')
-      {
-        FLAG |= 1;
-        char ch = input->bufferPop();
-      }
-      else if(kk == 'A')
-      {
-        doorAngleValue = 1;
-      }
-      else if(kk == 'B')
-      {
-        doorAngleValue = 2;
-      }
-    }
+    Serial.print("KEY: ");
+    Serial.println(input->getKey());
 
-  Serial.print(doorAngleValue);
-  Serial.print(" ");
+    // switch-case does not work (!)
+    
+    char in = input->getKey();
+    if (in == 'C') {
+      FLAG |= 1;
+      input->bufferClear();
+    } else if (in == 'D') {
+      FLAG |= 1;
+      input->bufferPop();
+    } else if (in == 'A') {
+      doorAngleValue = 1;
+    } else if (in == 'B') {
+      doorAngleValue = 2;
+    }
+  }
   
-  Serial.println(doorServo->getAngle());
-  if(doorAngleValue == 1)
-  {
+  if(doorAngleValue == 1) {
     doorServo->approach(doorServo->getAngle(), 90, 15);
   }
   else if(doorAngleValue == 2)

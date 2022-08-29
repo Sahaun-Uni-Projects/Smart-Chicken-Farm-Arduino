@@ -1,15 +1,15 @@
 #include <Servo.h>
 
 class ServoMotor : public Component {
-  int pin, angle, target, speed;
+  int pin, angle;
   Servo servo;
   
 public:
-  ServoMotor(int pin) : pin(pin) {}
+  ServoMotor(int pin, int angle = 0) : pin(pin), angle(angle) {}
 
   void setup() {
     servo.attach(pin);
-    setAngle(0);
+    setAngle(angle);
   }
 
   int getAngle() {
