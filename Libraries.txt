@@ -1,0 +1,19 @@
+- Keypad
+Version: 3.1.1
+Author: Community https://github.com/chris--a/keypad
+Link: https://www.arduino.cc/reference/en/libraries/keypad
+
+- DHT Sensor Library
+Version: 1.4.4
+Author: Adafruit
+Link: https://github.com/adafruit/DHT-sensor-library
+
+- ArduinoSTL
+Version: 1.3.3
+Author: Mike Matera
+Link: https://github.com/mike-matera/ArduinoSTL
+
+- SPFD5408
+Version: -
+Author: Joao Lopes
+Link: https://github.com/JoaoLopesF/SPFD5408

@@ -1,0 +1,8 @@
+class __Component : public Component {
+  int pin;
+  
+public:
+  __Component(int pin) : pin(pin) {
+      pinMode(pin, INPUT);
+  }
+};
