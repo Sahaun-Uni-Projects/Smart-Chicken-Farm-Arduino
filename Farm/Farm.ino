@@ -28,9 +28,10 @@ WaterLevelSensor *waterLevelSensor;
 Buzzer *motionBuzzer;
 WaterPump *waterPump;
 PirSensor *motionSensor;
+ServoMotor *doorServo;
 
 std::vector<Component*> components;
-int FLAG;
+int FLAG, doorAngleValue;
 
 void init_components() {
   input = new Keypad4x4(new byte[4]{46, 47, 48, 49}, new byte[4]{50, 51, 52, 53}, 10);
@@ -47,13 +48,17 @@ void init_components() {
   waterPump = new WaterPump(32);
   motionSensor = new PirSensor(40);
   motionBuzzer = new Buzzer(42);
+  doorServo = new ServoMotor(36);
 
   components = {
-    /*input, screen, darkLight1, darkLight2, heatLight,
+    input, doorServo,
+    /*
+     *  screen, darkLight1, darkLight2, heatLight,
     humidityFan, coolerFan,
     dhtSensor, lightSensor,
     waterLevelSensor, waterPump,*/
-    motionSensor, motionLight, motionBuzzer,
+    //motionSensor, motionLight, motionBuzzer,
+    
   };
 }
 
@@ -107,19 +112,59 @@ void ev_step() {
   coolerFan->setValue(hot);
 
   waterPump->setValue(waterLevelSensor->getLevel() > 650);
+
+  if(motionSensor->getValue() == HIGH)
+  {
+    motionBuzzer->play(1000, 1000);
+    motionLight->setValue(HIGH);
+  }
+  else
+  {
+    motionBuzzer->stop();
+    motionLight->setValue(LOW);
+  }
+
+
+
+
+
+ 
   
   if (input->keyPressed()) {
-    switch (input->getKey()) {
-      case 'C':
+        Serial.println(input->getKey());
+    char kk= input->getKey();
+    
+      if(kk == 'C')
+      {
         FLAG |= 1;
         input->bufferClear();
-      break;
-      case 'D':
+      }
+      else if(kk == 'D')
+      {
         FLAG |= 1;
         char ch = input->bufferPop();
-      break;
-      default: break;
+      }
+      else if(kk == 'A')
+      {
+        doorAngleValue = 1;
+      }
+      else if(kk == 'B')
+      {
+        doorAngleValue = 2;
+      }
     }
+
+  Serial.print(doorAngleValue);
+  Serial.print(" ");
+  
+  Serial.println(doorServo->getAngle());
+  if(doorAngleValue == 1)
+  {
+    doorServo->approach(doorServo->getAngle(), 90, 15);
+  }
+  else if(doorAngleValue == 2)
+  {
+    doorServo->approach(doorServo->getAngle(), 0, 15);
   }
 }
 

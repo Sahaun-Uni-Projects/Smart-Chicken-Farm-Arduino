@@ -9,6 +9,7 @@ public:
 
   void setup() {
     servo.attach(pin);
+    setAngle(0);
   }
 
   int getAngle() {
@@ -24,6 +25,6 @@ public:
     // Good enough for 180-degree servo motors
     int diff = to-from;
     from = (diff >= 0) ? std::min(from+spd, to) : std::max(from-spd, to);
-    angle = from;
+    setAngle(from);
   }
 };
