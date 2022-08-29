@@ -1,14 +1,17 @@
 #include "ArduinoSTL.h"
 #include "state.h"
 #include "component.h"
-#include "input.h"
-#include "led.h"
+
 #include "fan.h"
+#include "led.h"
+#include "input.h"
+#include "buzzer.h"
+#include "pir_sensor.h"
 #include "water_pump.h"
-#include "servo_motor.h"
 #include "lcd_display.h"
-#include "humiture_sensor.h"
+#include "servo_motor.h"
 #include "photo_resistor.h"
+#include "humiture_sensor.h"
 #include "water_level_sensor.h"
 
 #define HUMIDITY_THRESHOLD 65.
@@ -17,12 +20,14 @@
 
 Keypad4x4 *input;
 LcdDisplay *screen;
-Led *darkLight1, *darkLight2, *heatLight;
+Led *darkLight1, *darkLight2, *heatLight, *motionLight;
 Fan *coolerFan, *humidityFan;
 HumitureSensor *dhtSensor;
 PhotoResistor *lightSensor;
 WaterLevelSensor *waterLevelSensor;
+Buzzer *motionBuzzer;
 WaterPump *waterPump;
+PirSensor *motionSensor;
 
 std::vector<Component*> components;
 int FLAG;
@@ -33,18 +38,22 @@ void init_components() {
   darkLight1 = new Led(22);
   darkLight2 = new Led(23);
   heatLight = new Led(24);
+  motionLight = new Led(44);
   humidityFan = new Fan(26);
   coolerFan = new Fan(27);
   dhtSensor = new HumitureSensor(30);
   lightSensor = new PhotoResistor(A8);
   waterLevelSensor = new WaterLevelSensor(A9);
   waterPump = new WaterPump(32);
+  motionSensor = new PirSensor(40);
+  motionBuzzer = new Buzzer(42);
 
   components = {
-    input, screen, darkLight1, darkLight2, heatLight,
+    /*input, screen, darkLight1, darkLight2, heatLight,
     humidityFan, coolerFan,
     dhtSensor, lightSensor,
-    waterLevelSensor, waterPump,
+    waterLevelSensor, waterPump,*/
+    motionSensor, motionLight, motionBuzzer,
   };
 }
 
